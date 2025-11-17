@@ -7,4 +7,9 @@
     <RootNamespace>FrontEndNET_MercadoLibre</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.3.8" />
+    <PackageReference Include="jQuery" Version="3.7.1" />
+  </ItemGroup>
+
 </Project>
