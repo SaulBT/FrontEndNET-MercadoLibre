@@ -21,7 +21,7 @@ public class RefrescaTakenDelegatingHandler(AuthClientService auth, IHttpContext
                 new("jwt", jwt),
                 new(ClaimTypes.Role, httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role)!),
             };
-            auth.IniciaSesionAsync(claims);
+            auth.InciaSesionAsync(claims);
         }
         return response;
     }
