@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FrontEndNET-MercadoLibre")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2e1d5fadf2bb1cd51b666babc23b5f354494f898")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70428db9c166fd42025a2fbebe072d943fcb71c3")]
 [assembly: System.Reflection.AssemblyProductAttribute("FrontEndNET-MercadoLibre")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FrontEndNET-MercadoLibre")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
