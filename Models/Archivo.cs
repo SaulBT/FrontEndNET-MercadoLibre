@@ -7,7 +7,9 @@ public class Archivo
     [Display(Name = "Id")]
     public int? ArchivoId { get; set; }
 
-    [Display(Name = "Nombre")]
+    [Display(Name = "MIME")]
+    public string? Mime { get; set; }
+
     public string? Nombre { get; set; }
 
     [Display(Name = "Tamprecio")]

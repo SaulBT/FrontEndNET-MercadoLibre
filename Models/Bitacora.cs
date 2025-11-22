@@ -8,7 +8,7 @@ public class Bitacora
     public int? BitacoraId { get; set; }
 
     [Display(Name = "Acción")]
-    public string? Action { get; set; }
+    public string? Accion { get; set; }
 
     [Display(Name = "Elemento Id")]
     public string? ElementoId { get; set; }
