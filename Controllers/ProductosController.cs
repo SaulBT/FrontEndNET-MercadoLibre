@@ -33,7 +33,7 @@ public class ProductosController(ProductosClientService productos,
         return View(lista);
     }
 
-    public async Task<IActionResult> Detalles(int id)
+    public async Task<IActionResult> Detalle(int id)
     {
         Producto? item = null;
         ViewBag.Url = configuration["UrlWebAPI"];
@@ -82,6 +82,7 @@ public class ProductosController(ProductosClientService productos,
     public async Task<IActionResult> EditarAsync(int id)
     {
         Producto? itemToEdit = null;
+        ViewBag.Url = configuration["UrlWebAPI"];
         try
         {
             itemToEdit = await productos.GetAsync(id);
@@ -92,11 +93,11 @@ public class ProductosController(ProductosClientService productos,
             if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 return RedirectToAction("Salir", "Auth");
         }
-
+        await ProductosDropDownListAsync(itemToEdit.ArchivoId);
         return View(itemToEdit);
     }
 
-    [HttpPut]
+    [HttpPost]
     public async Task<IActionResult> EditarAsync(int id, Producto itemToEdit)
     {
         if (id != itemToEdit.ProductoId) return NotFound();
@@ -141,8 +142,8 @@ public class ProductosController(ProductosClientService productos,
         return View(itemToDelete);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> EliminarAsync(int id)
+    [HttpPost]
+    public async Task<IActionResult> Eliminar(int id)
     {
         ViewBag.Url = configuration["UrlWebAPI"];
         if (ModelState.IsValid)
