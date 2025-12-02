@@ -41,6 +41,10 @@ builder.Services.AddHttpClient<BitacoraClientService>(httpClient => { httpClient
     .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
     .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
 
+builder.Services.AddHttpClient<CarritosClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
+    .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
+
 builder.Services.AddHttpClient<RegistroClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); });
 
 // Soporte para Cookie Auth

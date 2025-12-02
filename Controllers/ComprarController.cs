@@ -20,8 +20,15 @@ public class ComprarController(ProductosClientService productos, IConfiguration 
             if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 return RedirectToAction("Salir", "Auth");
         }
+
         ViewBag.Url = configuration["UrlWebAPI"];
         ViewBag.search = s;
         return View(lista);
     }
+    
+     public Task<IActionResult> IrAlCarrito()
+    {
+        return Task.FromResult<IActionResult>(RedirectToAction("Index", "Carrito"));
+    }
+    
 }
