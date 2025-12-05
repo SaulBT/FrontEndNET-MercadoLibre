@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "3B6kfCVjk/I=",
+  "dgSpecHash": "cgd8slkLdq0=",
   "success": true,
-  "projectFilePath": "C:\\codigo\\ps\\FrontEndNET-MercadoLibre\\FrontEndNET-MercadoLibre.csproj",
+  "projectFilePath": "C:\\repos\\FrontEndNET-MercadoLibre\\FrontEndNET-MercadoLibre.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\axell\\.nuget\\packages\\bootstrap\\5.3.8\\bootstrap.5.3.8.nupkg.sha512",
-    "C:\\Users\\axell\\.nuget\\packages\\jquery\\3.7.1\\jquery.3.7.1.nupkg.sha512"
+    "C:\\Users\\Usuario\\.nuget\\packages\\bootstrap\\5.3.8\\bootstrap.5.3.8.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\jquery\\3.7.1\\jquery.3.7.1.nupkg.sha512"
   ],
   "logs": []
 }

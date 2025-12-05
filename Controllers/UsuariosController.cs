@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace frontendnet;
 
 [Authorize(Roles = "Administrador")]
-public class UsuariosController(UsuariosClientService usuarios, RolesClientService roles) : Controller
+public class UsuariosController(UsuariosClientService usuarios, RolesClientService roles, ILogger<UsuariosController> logger) : Controller
 {
+
     public async Task<IActionResult> Index()
     {
         List<Usuario>? lista = [];
@@ -69,7 +70,7 @@ public class UsuariosController(UsuariosClientService usuarios, RolesClientServi
         return View(itemToCreate);
     }
 
-    [HttpPut("[controller]/[action]/{email}")]
+    [HttpGet("[controller]/[action]/{email}")]
     public async Task<IActionResult> EditarAsync(string email)
     {
         Usuario? itemToEdit = null;
@@ -88,7 +89,7 @@ public class UsuariosController(UsuariosClientService usuarios, RolesClientServi
         return View(itemToEdit);
     }
 
-    [HttpPut("[controller]/[action]/{email}")]
+    [HttpPost("[controller]/[action]/{email}")]
     public async Task<IActionResult> EditarAsync(string email, Usuario itemToEdit)
     {
         if (email != itemToEdit.Email) return NotFound();
@@ -133,7 +134,7 @@ public class UsuariosController(UsuariosClientService usuarios, RolesClientServi
         return View(itemToDelete);
     }
 
-    [HttpDelete]
+    [HttpPost]
     public async Task<IActionResult> Eliminar(string id)
     {
         if (ModelState.IsValid)

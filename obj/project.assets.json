@@ -364,26 +364,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\axell\\.nuget\\packages\\": {}
+    "C:\\Users\\Usuario\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\codigo\\ps\\FrontEndNET-MercadoLibre\\FrontEndNET-MercadoLibre.csproj",
+      "projectUniqueName": "C:\\repos\\FrontEndNET-MercadoLibre\\FrontEndNET-MercadoLibre.csproj",
       "projectName": "FrontEndNET-MercadoLibre",
-      "projectPath": "C:\\codigo\\ps\\FrontEndNET-MercadoLibre\\FrontEndNET-MercadoLibre.csproj",
-      "packagesPath": "C:\\Users\\axell\\.nuget\\packages\\",
-      "outputPath": "C:\\codigo\\ps\\FrontEndNET-MercadoLibre\\obj\\",
+      "projectPath": "C:\\repos\\FrontEndNET-MercadoLibre\\FrontEndNET-MercadoLibre.csproj",
+      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+      "outputPath": "C:\\repos\\FrontEndNET-MercadoLibre\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\axell\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -436,7 +434,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
