@@ -482,3 +482,11 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Build Results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
