@@ -47,7 +47,7 @@ public class CategoriasController(CategoriasClientService categorias) : Controll
     }
 
     [HttpPost]
-    public async Task<IActionResult> CrearAsync(Categoria itemToCreate)
+    public async Task<IActionResult> Crear(Categoria itemToCreate)
     {
         if (ModelState.IsValid)
         {
@@ -63,11 +63,12 @@ public class CategoriasController(CategoriasClientService categorias) : Controll
             }
         }
 
-        ModelState.AddModelError("Nombre", "No ha sido posible realizar la acción, Inténtelo nuevamente");
+        ModelState.AddModelError("Nombre", "No ha sido posible realizar la acción, inténtelo nuevamente.");
         return View(itemToCreate);
     }
 
-    public async Task<IActionResult> EditarAsync(int id)
+    // GET: /Categorias/Editar/5
+    public async Task<IActionResult> Editar(int id)
     {
         Categoria? itemToEdit = null;
         try
@@ -84,8 +85,9 @@ public class CategoriasController(CategoriasClientService categorias) : Controll
         return View(itemToEdit);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> EditarAsync(int id, Categoria itemToEdit)
+    // POST: /Categorias/Editar/5
+    [HttpPost]
+    public async Task<IActionResult> Editar(int id, Categoria itemToEdit)
     {
         if (id != itemToEdit.CategoriaId) return NotFound();
 
@@ -103,10 +105,11 @@ public class CategoriasController(CategoriasClientService categorias) : Controll
             }
         }
 
-        ModelState.AddModelError("Nombre", "No ha sido posible realizar la acción. Inténtelo nuevamente");
+        ModelState.AddModelError("Nombre", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
         return View(itemToEdit);
     }
 
+    // GET: /Categorias/Eliminar/5
     public async Task<IActionResult> Eliminar(int id, bool? showError = false)
     {
         Categoria? itemToDelete = null;
@@ -116,7 +119,7 @@ public class CategoriasController(CategoriasClientService categorias) : Controll
             if (itemToDelete == null) return NotFound();
 
             if (showError.GetValueOrDefault())
-                ViewData["ErrorMessage"] = "No ha sido posible realizar la accion. Inténtelo nuevamente";
+                ViewData["ErrorMessage"] = "No ha sido posible realizar la acción. Inténtelo nuevamente.";
         }
         catch (HttpRequestException ex)
         {
@@ -127,8 +130,9 @@ public class CategoriasController(CategoriasClientService categorias) : Controll
         return View(itemToDelete);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> EliminarAsync(int id)
+    // POST: /Categorias/Eliminar/5
+    [HttpPost]
+    public async Task<IActionResult> Eliminar(int id)
     {
         if (ModelState.IsValid)
         {

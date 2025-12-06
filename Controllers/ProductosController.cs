@@ -26,8 +26,10 @@ public class ProductosController(ProductosClientService productos,
                 return RedirectToAction("Salir", "Auth");
         }
 
-        if (User.FindFirstValue(ClaimTypes.Role) == "Usuario")
-            ViewBag.SoloUsuario = true;
+        // Marca si es admin o usuario
+        ViewBag.SoloAdmin  = User.IsInRole("Administrador");
+        ViewBag.SoloUsuario = User.IsInRole("Usuario");
+        
         ViewBag.Url = configuration["UrlWebAPI"];
         ViewBag.search = s;
         return View(lista);
@@ -50,8 +52,9 @@ public class ProductosController(ProductosClientService productos,
                 return RedirectToAction("Error", "Home");
         }
 
-        if (User.FindFirstValue(ClaimTypes.Role) == "Usuario")
-            ViewBag.SoloUsuario = true;
+        // Marca si es admin o usuario
+        ViewBag.SoloAdmin  = User.IsInRole("Administrador");
+        ViewBag.SoloUsuario = User.IsInRole("Usuario");
             
         return View(item);
     }
