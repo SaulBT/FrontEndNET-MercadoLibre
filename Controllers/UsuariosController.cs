@@ -4,11 +4,13 @@ using frontendnet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using frontendnet.Extensions;
+using System.Net;
 
 namespace frontendnet;
 
 [Authorize(Roles = "Administrador")]
-public class UsuariosController(UsuariosClientService usuarios, RolesClientService roles, ILogger<UsuariosController> logger) : Controller
+public class UsuariosController(UsuariosClientService usuarios, RolesClientService roles) : Controller
 {
 
     public async Task<IActionResult> Index()
@@ -53,16 +55,12 @@ public class UsuariosController(UsuariosClientService usuarios, RolesClientServi
     {
         if (ModelState.IsValid)
         {
-            try
-            {
-                await usuarios.PostAsync(itemToCreate);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    return RedirectToAction("Salir", "Auth");
-            }
+            var response = await usuarios.PostAsync(itemToCreate);
+            if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
+
+            await ModelState.ProcesarErroresDeApi(response);
+            
+            if (response.StatusCode == HttpStatusCode.Unauthorized) return RedirectToAction("Salir", "Auth");
         }
 
         ModelState.AddModelError("Email", "No ha sido posible realizar la acción. Inténtelo nuevamente");
@@ -96,16 +94,13 @@ public class UsuariosController(UsuariosClientService usuarios, RolesClientServi
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                await usuarios.PutAsync(itemToEdit);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    return RedirectToAction("Salir", "Auth");
-            }
+            var response = await usuarios.PutAsync(itemToEdit);
+
+            if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
+
+            await ModelState.ProcesarErroresDeApi(response);
+            
+            if (response.StatusCode == HttpStatusCode.Unauthorized) return RedirectToAction("Salir", "Auth");
         }
         
         ModelState.AddModelError("Nombre", "No ha sido posible realizar la acción. Inténtelo nuevamente");

@@ -1,6 +1,8 @@
+using System.Text.Json;
 using frontendnet.Models;
 using frontendnet.Services;
 using Microsoft.AspNetCore.Mvc;
+using frontendnet.Extensions;
 
 namespace frontendnet;
 
@@ -15,33 +17,19 @@ public class RegistroUsuariosController(RegistroClientService usuario) : Control
     public async Task<IActionResult> Crear(UsuarioPwd itemToCreate)
     {
         itemToCreate.Rol = "Usuario";
-
         ModelState.Remove(nameof(itemToCreate.Rol));
-       
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                await usuario.PostAsync(itemToCreate);
-                ViewBag.MensajeModal = "Registro de cuenta exitoso";
-                return RedirectToAction("Index", "Auth");
-            }
-            catch (HttpRequestException ex)
-            {
-                ModelState.AddModelError("", $"Error de red: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", $"Error inesperado: {ex.Message}");
-                ViewBag.MensajeModal = "Registro NO exitoso. Inténtelo nuevamente.";
-            }
-        }
-        else
-        {
-            ModelState.AddModelError("", "El modelo no es válido.");
-        }
+
+        if (!ModelState.IsValid) return View("Index", itemToCreate);
+
+        var response = await usuario.PostAsync(itemToCreate);
         
+        if(response.IsSuccessStatusCode)
+        {
+            ViewBag.MensajeModal = "Registro de cuenta exitoso";
+            return RedirectToAction("Index", "Auth");
+        }
+
+        await ModelState.ProcesarErroresDeApi(response);
         return View("Index", itemToCreate);
     }
-        
 }
