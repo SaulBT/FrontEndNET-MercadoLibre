@@ -2,6 +2,7 @@ using System.Text.Json;
 using frontendnet.Models;
 using frontendnet.Services;
 using Microsoft.AspNetCore.Mvc;
+using frontendnet.Extensions;
 
 namespace frontendnet;
 
@@ -17,53 +18,18 @@ public class RegistroUsuariosController(RegistroClientService usuario) : Control
     {
         itemToCreate.Rol = "Usuario";
         ModelState.Remove(nameof(itemToCreate.Rol));
-       
-        if (ModelState.IsValid)
-        {
-            var response = await usuario.PostAsync(itemToCreate);
 
-            if(response.IsSuccessStatusCode)
-            {
-                ViewBag.MensajeModal = "Registro de cuenta exitoso";
-                return RedirectToAction("Index", "Auth");
-            }
+        if (!ModelState.IsValid) return View("Index", itemToCreate);
 
-            if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var contenido = await response.Content.ReadAsStringAsync();
-                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-                try
-                {
-                    var errorResponse = JsonSerializer.Deserialize<BackendErrorResponse>(contenido, opciones);
-
-                    if (errorResponse != null && errorResponse.errors.Count > 0)
-                    {
-                        foreach (var error in errorResponse.errors)
-                        {
-                            ModelState.AddModelError(error.path, error.msg);
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", $"Error en los datos enviados.");
-                    }
-                }
-                catch (JsonException)
-                {
-                    ModelState.AddModelError("", "Error procesando la respuesta del servidor.");
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", $"Error del servidor: {response.StatusCode}");
-            }
-        }
-        else
-        {
-            ModelState.AddModelError("", "El modelo no es válido.");
-        }
+        var response = await usuario.PostAsync(itemToCreate);
         
+        if(response.IsSuccessStatusCode)
+        {
+            ViewBag.MensajeModal = "Registro de cuenta exitoso";
+            return RedirectToAction("Index", "Auth");
+        }
+
+        await ModelState.ProcesarErroresDeApi(response);
         return View("Index", itemToCreate);
     }
 }

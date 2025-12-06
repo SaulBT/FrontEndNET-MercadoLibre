@@ -8,7 +8,6 @@ public class RefrescaTokenDelegatingHandler(AuthClientService auth, IHttpContext
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var response = await base.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
         //Revisa si el servidor nos envió un nuevo token
         if (response.Headers.Contains("Set-Authorization"))
         {
