@@ -1,3 +1,4 @@
+using System.Text.Json;
 using frontendnet.Models;
 using frontendnet.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,25 +16,47 @@ public class RegistroUsuariosController(RegistroClientService usuario) : Control
     public async Task<IActionResult> Crear(UsuarioPwd itemToCreate)
     {
         itemToCreate.Rol = "Usuario";
-
         ModelState.Remove(nameof(itemToCreate.Rol));
        
         if (ModelState.IsValid)
         {
-            try
+            var response = await usuario.PostAsync(itemToCreate);
+
+            if(response.IsSuccessStatusCode)
             {
-                await usuario.PostAsync(itemToCreate);
                 ViewBag.MensajeModal = "Registro de cuenta exitoso";
                 return RedirectToAction("Index", "Auth");
             }
-            catch (HttpRequestException ex)
+
+            if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                ModelState.AddModelError("", $"Error de red: {ex.Message}");
+                var contenido = await response.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                try
+                {
+                    var errorResponse = JsonSerializer.Deserialize<BackendErrorResponse>(contenido, opciones);
+
+                    if (errorResponse != null && errorResponse.errors.Count > 0)
+                    {
+                        foreach (var error in errorResponse.errors)
+                        {
+                            ModelState.AddModelError(error.path, error.msg);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", $"Error en los datos enviados.");
+                    }
+                }
+                catch (JsonException)
+                {
+                    ModelState.AddModelError("", "Error procesando la respuesta del servidor.");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ModelState.AddModelError("", $"Error inesperado: {ex.Message}");
-                ViewBag.MensajeModal = "Registro NO exitoso. Inténtelo nuevamente.";
+                ModelState.AddModelError("", $"Error del servidor: {response.StatusCode}");
             }
         }
         else
@@ -43,5 +66,4 @@ public class RegistroUsuariosController(RegistroClientService usuario) : Control
         
         return View("Index", itemToCreate);
     }
-        
 }
