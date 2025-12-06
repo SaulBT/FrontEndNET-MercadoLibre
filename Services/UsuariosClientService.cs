@@ -22,7 +22,7 @@ public class UsuariosClientService(HttpClient client)
 
     public async Task PutAsync(Usuario usuario)
     {
-        var response = await client.PutAsJsonAsync($"api/usuarios({usuario.Email})", usuario);
+        var response = await client.PutAsJsonAsync($"api/usuarios/{usuario.Email}", usuario);
         response.EnsureSuccessStatusCode();
     }
 

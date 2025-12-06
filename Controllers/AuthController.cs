@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace frontendnet;
 
-public class AuthController(AuthClientService auth) : Controller
+public class AuthController(AuthClientService auth, ILogger<AuthController> logger) : Controller
 {
     [AllowAnonymous]
     public IActionResult Index()
     {
+        logger.LogInformation("Probando...");
         return View();
     }
 
