@@ -12,28 +12,107 @@
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Total</th>
-                <th>Fecha de compra</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
+    <div class="accordion" id="accordionHistorial">
+        @for (int i = 0; i < Model.Count; i++)
         {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Total.ToString("C")</td>
-                <td>@item.FechaCompra?.ToLocalTime().ToString("g")</td>
+            var carrito = Model[i];
+            var collapseId = $"collapse_{carrito.Id}";
+            var headingId = $"heading_{carrito.Id}";
 
-                <td>
-                    <a asp-controller="Historial" asp-action="Detalle" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Ver</a>
-                </td>
-            </tr>
+            <div class="card mb-3">
+                <div class="card-header d-flex justify-content-between align-items-center" id="@headingId">
+                    <div>
+                        <strong>Compra #@carrito.Id</strong><br />
+                        <span>Total: @carrito.Total.ToString("C")</span><br />
+                        <small class="text-muted">
+                            Fecha: @carrito.FechaCompra?.ToLocalTime().ToString("g")
+                        </small>
+                    </div>
+
+                    <button class="btn btn-sm btn-primary"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#@collapseId"
+                            aria-expanded="@(i == 0 ? "true" : "false")"
+                            aria-controls="@collapseId">
+                        Ver productos
+                    </button>
+                </div>
+
+                <div id="@collapseId"
+                     class="collapse @(i == 0 ? "show" : "")"
+                     aria-labelledby="@headingId"
+                     data-bs-parent="#accordionHistorial">
+                    <div class="card-body">
+                        @if (carrito.ItemsCarrito == null || !carrito.ItemsCarrito.Any())
+                        {
+                            <div class="alert alert-warning text-center">
+                                Este carrito no contiene productos.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Detalle de la compra:</h5>
+                                <span class="fw-semibold">
+                                    @(carrito.FechaCompra.HasValue 
+                                        ? carrito.FechaCompra.Value.ToString("f") 
+                                        : "Fecha no disponible")
+                                </span>
+                            </div>
+
+                            <table class="table table-borderless">
+                                <thead class="border-bottom text-muted">
+                                    <tr class="text-start">
+                                        <th style="width: 60%;">Producto</th>
+                                        <th style="width: 20%;" class="text-center">Cantidad</th>
+                                        <th style="width: 20%;" class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in carrito.ItemsCarrito)
+                                    {
+                                        <tr style="font-size: 1.0rem;">
+                                            <td>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    @if (item.Producto?.ArchivoId != null)
+                                                    {
+                                                        <img src='@((item.Producto.ArchivoId == null) 
+                                                            ? "https://placehold.co/100x80/FFF/999?text=Artículo" 
+                                                            : $"{ViewBag.Url}/api/archivos/{item.Producto.ArchivoId}")'
+                                                             alt="@item.Producto.Titulo"
+                                                             class="img-fluid"
+                                                             data-url="@ViewBag.Url"
+                                                             style="max-height: 80px;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">Sin imagen</span>
+                                                    }
+
+                                                    <span>@item.Producto?.Titulo</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center align-middle">@item.Cantidad</td>
+                                            <td class="text-end align-middle fw-semibold">
+                                                @item.Subtotal?.ToString("C")
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" class="text-end fw-bold text-dark">Total:</td>
+                                        <td class="text-end fw-bold text-success">
+                                            @carrito.Total.ToString("C")
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
         }
-        </tbody>
-    </table>
+    </div>
 }
